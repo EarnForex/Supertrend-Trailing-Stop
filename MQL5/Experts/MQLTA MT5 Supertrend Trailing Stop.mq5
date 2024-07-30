@@ -1,5 +1,5 @@
 #property link          "https://www.earnforex.com/metatrader-expert-advisors/supertrend-trailing-stop/"
-#property version       "1.04"
+#property version       "1.041"
 
 #property copyright     "EarnForex.com - 2019-2024"
 #property description   "This expert advisor will trail the stop-loss following the Supertrend line."
@@ -253,7 +253,7 @@ void TrailingStop()
             NewTP = TPPrice;
             if (NewSL > SLPrice + StopLevel)
             {
-                ModifyOrder((int)ticket, NewSL, NewTP);
+                ModifyOrder(ticket, NewSL, NewTP);
             }
         }
         else if ((PositionType == POSITION_TYPE_SELL) && (Supertrend > SymbolInfoDouble(Instrument, SYMBOL_ASK) + StopLevel))
@@ -262,13 +262,13 @@ void TrailingStop()
             NewTP = TPPrice;
             if ((NewSL < SLPrice) || (SLPrice == 0))
             {
-                ModifyOrder((int)ticket, NewSL, NewTP);
+                ModifyOrder(ticket, NewSL, NewTP);
             }
         }
     }
 }
 
-void ModifyOrder(int Ticket, double SLPrice, double TPPrice)
+void ModifyOrder(ulong Ticket, double SLPrice, double TPPrice)
 {
     string symbol = PositionGetString(POSITION_SYMBOL);
     int eDigits = (int)SymbolInfoInteger(symbol, SYMBOL_DIGITS);
@@ -301,7 +301,7 @@ void ModifyOrder(int Ticket, double SLPrice, double TPPrice)
     }
 }
 
-void NotifyStopLossUpdate(int OrderNumber, double SLPrice, string symbol)
+void NotifyStopLossUpdate(ulong OrderNumber, double SLPrice, string symbol)
 {
     if (!EnableNotify) return;
     if ((!SendAlert) && (!SendApp) && (!SendEmail)) return;
